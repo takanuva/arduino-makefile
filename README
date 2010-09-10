@@ -1,0 +1,76 @@
+######################################################################
+#                     Arduino Project's Skeleton                     #
+# Written by: Paulo H. "Taka" Torrens <paulo_torrens@hotmail.com>    #
+######################################################################
+
+1 - About
+This is an Arduino makefile, an alternative to the current IDE, which
+I made in hope to help the Arduino community.
+It will build your source code and any library you want to use with
+it. I've also created a quite simple Serial.printf(const char *, ...),
+it currently only works with %d and %s, but better than nothing.
+It is in the file ./lib/default/Print.cpp, if you want to see it.
+
+You may use this for any porpuse, and edit as you want. This code is
+released under the GPL license. It is not needed at all, but it would
+be apreciated if you comment you used my software, or just send me an
+e-mail with thanks. =D
+
+Enjoy, folks.
+
+2 - Directory Structure
+######################################################################
+# ./                # Project's root directory                       #
+# ./Makefile        # The project Makefile                           #
+# ./scripts         # Scripts' directory                             #
+# ---------/make.rb # The Makefile generator script                  #
+# ---------/size.rb # Size verifier script                           #
+# ---------/...     # Project's remaining scripts                    #
+# ./lib             # Libraries' directory                           #
+# -----/...         # Library "x" directory                          #
+# -----/.../...     # Library "x" source files (scanned recursively) #
+# ./src             # Project's source directory                     #
+# -----/...         # Project's source files (scanned recursively)   #
+# ./include         # Project's headers directory                    #
+# ---------/...     # Project's headers (scanned recursively)        #
+######################################################################
+
+3 - The Output
+The output files will be all the libraries *.a files, the binary
+"project.elf" file, which is converted to "project.hex". This final
+file is then uploaded by running "make upload".
+
+4 - Makefile
+The Makefile is automatically generated every time a modification to
+some directory, to the Makefile and to the generator itself (so it is
+useless to edit it, as it will be recreated).
+It is created by scripts/make.rb, and uses scripts/size.rb to check
+the size of the final program.
+The generator will create all the libraries and the program itself,
+scanning the folders recursivelly.
+Some rules:
+"make": 
+  will generate the final file, "project.hex". It will
+  recreate the Makefile itself if necessary.
+"make upload": 
+  generates the file (if not generated yet) and
+  then uploads it to the Arduino board. It is not necessary to
+  call "make" before it, because it checks if the final file is
+  up to date before doing the upload itself. It will also check the
+  binary size.
+  The default port is /dev/tty0, to change the number you can, e.g.,
+  call "make USB=1" to use /dev/tty1 instead.
+"make clean": deletes all the files created by the project (i.e.,
+  all the *.o files, *.a libraries, the "project.elf" and the "project.hex".
+
+5 - Libraries
+  Libraries may be reused in another project. Each directory inside
+the "lib" directory is considered a different library (e.g., the
+"default" directory will generate the library default.a, with all the
+source codes it may find inside lib/default (scanning recursivelly).
+  To create a new lib, e.g., "foo", create a directory foo in the
+"lib" directory, and populate it with *.c or *.cpp files. The
+Makefile will be automatically recreated and the library rule will
+have been made, and a foo.a file will appear (and will be added to
+the final executable).
+
